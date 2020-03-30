@@ -8,7 +8,7 @@ mydb=mysql.connector.connect(
 restaurant=['Sepoy Grande','Radission Blu','Orchid','Gufha','Jalpaan Dining Saga','Kapoor cafe']
 msg=1
 # mysql://b1d1295e215409:0f7a8997@us-cdbr-iron-east-01.cleardb.net/heroku_4b71b22231854d1?reconnect=true
-
+#amit
 def showMenu(msg):
     mycursor = mydb.cursor()
     mycursor.execute("Select * from menu_" + restaurant[msg - 1].split()[0])
