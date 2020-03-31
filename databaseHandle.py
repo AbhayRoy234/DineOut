@@ -1,14 +1,19 @@
 import mysql.connector
 def connect():
-    mydb=mysql.connector.connect(
-        host='us-cdbr-iron-east-01.cleardb.net',
-        user='b1d1295e215409',
-        password='0f7a8997',
-        database='heroku_4b71b22231854d1'
-    )
+    try:
+        mydb = mysql.connector.connect(
+            host='us-cdbr-iron-east-01.cleardb.net',
+            user='b1d1295e215409',
+            password='0f7a8997',
+            database='heroku_4b71b22231854d1'
+        )
+    except:
+        connect()
     return mydb
+
+
 restaurant=['Sepoy Grande','Radission Blu','Orchid','Gufha','Jalpaan Dining Saga','Kapoor cafe']
-msg=1
+passwords={1:'0001',2:'0002',3:'0003',4:'0004',5:'0005',6:'0006'}
 # mysql://b1d1295e215409:0f7a8997@us-cdbr-iron-east-01.cleardb.net/heroku_4b71b22231854d1?reconnect=true
 #amit
 def showMenu(msg):
@@ -33,10 +38,8 @@ def showSeats(msg):
 def bookSeat(msg):
     mydb = connect()
     mycursor=mydb.cursor()
-
     restno=int(msg[0])-1
     time=msg.split()[0][2:]
-    # cust_name=msg.split()[1:]
     mycursor.execute("Update seat_"+restaurant[restno].split()[0]+" set avail_table = avail_table -1 where time ="+time)
     mydb.commit()
     insert(msg)
@@ -54,4 +57,17 @@ def insert(msg):
     bookingDetails = (cust_name, time)
     mycursor1.execute(insertFn,bookingDetails)
     mydb.commit()
-
+def showBookings(msg):
+    restno=int(msg[0])-1
+    paswd=msg.split()[2]
+    if passwords[restno+1] == paswd:
+        mydb = connect()
+        mycursor = mydb.cursor()
+        mycursor.execute("Select * from bookings_" + restaurant[restno].split()[0])
+        bookings = mycursor.fetchall()
+        bookstr = "Time        Customer Name\n"
+        for i in range(len(bookings)):
+            bookstr += str(bookings[i][1]) + " PM   ===>  " + str(bookings[i][0]) + "\n"
+        return bookstr,1
+    else:
+        return " ",0
