@@ -62,7 +62,8 @@ def hotel_sms_reply():
     elif msg == 'c':
         append_menu_msg="To update menu of your restaurant\nGive instruction as:\n hotel no. menu <name of the item> <price> <password>\nfor instance if you want to update menu of Sepoy Grande give this instruction\n1 menu roti 30 ****"
         resp.message(append_menu_msg)
-    elif len(msg)>10 and int(msg.split()[0])<7:
+    elif len(msg)>10 and int(msg.split()[0])<7 :
+        # len=len(msg.split())
         if msg.split()[1] == 'bookings':
             showBooking,success=databaseHandle.showBookings(msg)
             if success:
@@ -71,10 +72,9 @@ def hotel_sms_reply():
                 error_msg="Either the instruction is invalid or password\nPlease try again"
                 resp.message(error_msg)
         elif msg.split()[1] == 'table':
-            len=str(len(msg.split))
             seatstr,success=databaseHandle.updateSeats(msg)
             if success:
-                resp.message("No. of available tables have been successfully updated for "+restaurant[int(msg[0])-1]+"\n"+seatstr+"\n"+len)
+                resp.message("No. of available tables have been successfully updated for "+restaurant[int(msg[0])-1]+"\n"+seatstr)
             else :
                 error_msg="Either the instruction or password is invalid\nPlease try again !"
                 resp.message(error_msg)
