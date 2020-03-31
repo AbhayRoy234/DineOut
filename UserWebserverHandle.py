@@ -50,6 +50,7 @@ def user_sms_reply():
 def hotel_sms_reply():
     msg = request.form.get('Body')
     resp = MessagingResponse()
+    msg_list=msg.split()
     if msg == 'Dine out':
         resp.message(
             "Greeting you on our platform!\nYou can manage your restaurant's data\nPartner resturants are:\n1. Sepoy Grande\n2. Radission Blu\n3. Orchid\n4. Gufha\n5. Jalpaan Dining Saga\n6. Kapoor's cafe\n\nTasks that can be performed:\na. View Bookings\nb. Update seat \nc. Add to Menu\nSelect the task to be performed by giving a,b or c as instruction")
@@ -62,23 +63,23 @@ def hotel_sms_reply():
     elif msg == 'c':
         append_menu_msg="To update menu of your restaurant\nGive instruction as:\n hotel no. menu <name of the item> <price> <password>\nfor instance if you want to update menu of Sepoy Grande give this instruction\n1 menu roti 30 ****"
         resp.message(append_menu_msg)
-    elif len(msg)>10 and int(msg.split()[0])<7 :
-        len=len(msg.split())
-        if msg.split()[1] == 'bookings' and len==3:
+    elif len(msg)>10 and msg_list[0].isdigit() and int(msg_list[0])<7 :
+        len=len(msg_list)
+        if msg_list[1] == 'bookings' and len==3:
             showBooking,success=databaseHandle.showBookings(msg)
             if success:
                 resp.message(showBooking)
             else :
                 error_msg="Either the instruction is invalid or password\nPlease try again"
                 resp.message(error_msg)
-        elif msg.split()[1] == 'table' and len==5:
+        elif msg_list[1] == 'table' and len==5:
             seatstr,success=databaseHandle.updateSeats(msg)
             if success:
                 resp.message("No. of available tables have been successfully updated for "+restaurant[int(msg[0])]+"\n"+seatstr)
             else :
                 error_msg="Either the instruction or password is invalid\nPlease try again !"
                 resp.message(error_msg)
-        elif msg.split()[1] == 'menu' and len>4:
+        elif msg_list[1] == 'menu' and len>4:
             menuStr,success = databaseHandle.updateMenu(msg,len)
             if success:
                 resp.message("Menu have been successfully updated for "+restaurant[int(msg[0])]+"\n"+menuStr)
