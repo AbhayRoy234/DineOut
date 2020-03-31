@@ -86,6 +86,7 @@ def hotel_sms_reply():
     else:
         error_msg = "Invalid instruction!\nTry giving 'Dine out'"
         resp.message(error_msg)
+    return str(resp)
 
 if __name__ == "__main__":
     app.run(debug=True)
