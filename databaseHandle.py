@@ -1,3 +1,6 @@
+#author:AMIT
+#this file handles all the request from WebserverHandle
+
 import mysql.connector
 def connect():
     try:
@@ -15,7 +18,6 @@ def connect():
 restaurant=['Sepoy Grande','Radission Blu','Orchid','Gufha','Jalpaan Dining Saga','Kapoor cafe']
 passwords={1:'0001',2:'0002',3:'0003',4:'0004',5:'0005',6:'0006'}
 # mysql://b1d1295e215409:0f7a8997@us-cdbr-iron-east-01.cleardb.net/heroku_4b71b22231854d1?reconnect=true
-#amit
 def showMenu(msg):
     mydb=connect()
     mycursor = mydb.cursor()
@@ -74,8 +76,8 @@ def showBookings(msg):
 def updateSeats(msg):
     restno = int(msg[0]) - 1
     paswd = msg.split()[4]
-    if passwords[restno + 1] == paswd:
-        updatedSeats=msg.split()[3]
+    updatedSeats=msg.split()[3]
+    if passwords[restno + 1] == paswd and int(updatedSeats)>0:
         time=msg.split()[2]
         mydb = connect()
         mycursor = mydb.cursor()
@@ -84,5 +86,24 @@ def updateSeats(msg):
         mydb.commit()
         seatstr=showSeats(restno+1)
         return seatstr, 1
+    else:
+        return " ", 0
+def updateMenu(msg,len):
+    restno = int(msg[0]) - 1
+    msg_list=msg.split()
+    paswd = msg_list[len-1]
+    if passwords[restno + 1] == paswd:
+        price=msg_list[len-2]
+        dish=""
+        for i in (2,len-3):
+            dish+=msg_list[i]+" "
+        mydb = connect()
+        mycursor = mydb.cursor()
+        insertFn="INSERT into menu_"+restaurant[restno]+" (dish, price) Values (%s, %s)"
+        menu=(dish,price)
+        mycursor.execute(insertFn,menu)
+        mydb.commit()
+        menuStr = showMenu(restno + 1)
+        return menuStr, 1
     else:
         return " ", 0

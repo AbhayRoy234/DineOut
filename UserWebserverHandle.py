@@ -1,3 +1,6 @@
+#author:AMIT
+#this is the flask application that fetch data from twilio api and gives response on basis of the instructions recieved
+
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 import databaseHandle
@@ -22,7 +25,7 @@ def user_sms_reply():
         menu = databaseHandle.showMenu(int(msg))
         seats = databaseHandle.showSeats(int(msg))
         resp.message(
-            "Menu: \n" + menu + "\n" + seats + "\nTo select seats for this resturant please specify the timing along with the resturant no. followed by your name \nFor instance if you have to select \n" + str(
+            "Menu: \n" + menu + "\n" + seats + "\nTo book a table for this resturant please specify the timing along with the resturant no. followed by your name \nFor instance if you have to select \n" + str(
                 msg) + ". " + restaurant[int(msg) - 1] + " for 10 o'clock give instruction as:\n" + str(
                 msg) + ".10  Your name")
     elif len(msg) >= 5 and msg[1] == '.' and int(msg[0]) < 7 and int(msg.split()[0][2:]) < 13:
@@ -37,7 +40,7 @@ def user_sms_reply():
                                                                         2:] + " pm.\nThanks for using our service")
         else:
             resp.message(
-                "We were unable to process your request at the moment, May be all the seats have been booked for the resturant you are tring for\nPlease try booking seats in a different resturant\nHoping to serve you soon!")
+                "We were unable to process your request at the moment, May be all the tables have been booked for the resturant you are tring for\nPlease try booking table in a different restaurant\nHoping to serve you soon!")
     else:
         resp.message("Invaild Request!\nPlease try giving\n'Dine out'")
     return str(resp)
@@ -54,29 +57,30 @@ def hotel_sms_reply():
         view_booking_msg = "To view bookings of your restaurant\nGive instruction as:\n hotel no. bookings <password>\nfor instance if you want to view bookings of Sepoy Grande give this instruction\n1 bookings ****"
         resp.message(view_booking_msg)
     elif msg == 'b':
-        update_seat_msg = "To update available tables for your restaurant\nGive instruction as:\n hotel no. table <time> <no. of seats> <password>\nfor instance if you want to update no. of available tables for Sepoy Grande give this instruction\n1 table 3 60 ****"
+        update_seat_msg = "To update available tables for your restaurant\nGive instruction as:\n hotel no. table <time> <no. of tables> <password>\nfor instance if you want to update no. of available tables for Sepoy Grande give this instruction\n1 table 3 60 ****"
         resp.message(update_seat_msg)
     elif msg == 'c':
         append_menu_msg="To update menu of your restaurant\nGive instruction as:\n hotel no. menu <name of the item> <price> <password>\nfor instance if you want to update menu of Sepoy Grande give this instruction\n1 menu roti 30 ****"
     elif len(msg)>10 and int(msg.split()[0])<7 :
-        if msg.split()[1] == 'bookings':
+        len=len(msg.split())
+        if msg.split()[1] == 'bookings' and len==3:
             showBooking,success=databaseHandle.showBookings(msg)
             if success:
                 resp.message(showBooking)
             else :
                 error_msg="Either the instruction is invalid or password\nPlease try again"
                 resp.message(error_msg)
-        elif msg.split()[1] == 'table':
+        elif msg.split()[1] == 'table' and len==5:
             seatstr,success=databaseHandle.updateSeats(msg)
             if success:
-                resp.message("No. of available seats have been successfully updated for "+restaurant[int(msg[0])]+"\n"+seatstr)
+                resp.message("No. of available tables have been successfully updated for "+restaurant[int(msg[0])]+"\n"+seatstr)
             else :
-                error_msg="Either the instruction is invalid or password\nPlease try again"
+                error_msg="Either the instruction or password is invalid\nPlease try again !"
                 resp.message(error_msg)
-        elif msg.split()[1] == 'menu':
-            success = databaseHandle.updateMenu(msg)
+        elif msg.split()[1] == 'menu' and len>4:
+            menuStr,success = databaseHandle.updateMenu(msg,len)
             if success:
-                resp.message("No. of available seats have been successfully updated")
+                resp.message("Menu have been successfully updated for "+restaurant[int(msg[0])]+"\n"+menuStr)
             else:
                 error_msg = "Either the instruction is invalid or password\nPlease try again"
                 resp.message(error_msg)

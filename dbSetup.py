@@ -1,3 +1,6 @@
+#author:AMIT
+#this python file was used to create the database at the local host futher the database was hosted on the heroku along with the flask application
+
 import mysql.connector
 
 mydb = mysql.connector.connect(
@@ -28,6 +31,10 @@ menu = [(12, 35),
 # mycursor.execute(createFn)
 # mydb.commit()
 passwords={1:'0001',2:'0002',3:'0003',4:'0004',5:'0005',6:'0006'}
-msg="1 table 3 60 0001"
-if passwords[int(msg[0])]==msg.split()[4]:
-    print("yes")
+msg="1 menu tandoori roti 30 0001"
+list=msg.split()
+str=""
+for i in (2,len(list)-3):
+    str+=list[i]+" "
+    print(i)
+print(str[:])
