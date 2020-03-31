@@ -32,7 +32,8 @@ menu = [(12, 35),
 # mycursor.execute(createFn)
 # mydb.commit()
 passwords={1:'0001',2:'0002',3:'0003',4:'0004',5:'0005',6:'0006'}
-msg="1 menu tandoori roti 30 0001"
+msg="1 table 3 0 0001"
+msg1="1.3 xyz"
 # list=msg.split()
 # str=""
 # for i in (2,len(list)-3):
@@ -42,3 +43,9 @@ msg="1 menu tandoori roti 30 0001"
 
 # m,t=databaseHandle.updateMenu(msg)
 # print(m,t)
+
+# x,y=databaseHandle.updateSeats(msg)
+# print(x,y)
+# c=databaseHandle.bookSeat(msg1)
+# print(c)
+# show=databaseHandle.showBookings()

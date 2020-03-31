@@ -43,9 +43,14 @@ def bookSeat(msg):
     restno=int(msg[0])-1
     time=msg.split()[0][2:]
     mycursor.execute("Update seat_"+restaurant[restno].split()[0]+" set avail_table = avail_table -1 where time ="+time)
-    mydb.commit()
-    insert(msg)
-    return 1
+    mycursor.execute("Select avail_table from seat_"+restaurant[restno].split()[0]+" where time ="+time)
+    avail_seat=mycursor.fetchall()
+    if int(avail_seat[0][0])>0:
+        mydb.commit()
+        insert(msg)
+        return 1
+    else:
+        return 0
 def insert(msg):
     mydb = connect()
     mycursor1 = mydb.cursor()
@@ -65,27 +70,33 @@ def showBookings(msg):
     if passwords[restno+1] == paswd:
         mydb = connect()
         mycursor = mydb.cursor()
-        mycursor.execute("Select * from bookings_" + restaurant[restno].split()[0])
-        bookings = mycursor.fetchall()
-        bookstr = "Time            Customer Name\n"
-        for i in range(len(bookings)):
-            bookstr += str(bookings[i][1]) + " PM   ===>  " + str(bookings[i][0]) + "\n"
-        return bookstr,1
+        try:
+            mycursor.execute("Select * from bookings_" + restaurant[restno].split()[0])
+            bookings = mycursor.fetchall()
+            bookstr = "Time            Customer Name\n"
+            for i in range(len(bookings)):
+                bookstr += str(bookings[i][1]) + " PM   ===>  " + str(bookings[i][0]) + "\n"
+            return bookstr,1
+        except:
+            return " ",0
     else:
         return " ",0
 def updateSeats(msg):
     restno = int(msg[0]) - 1
     paswd = msg.split()[4]
     updatedSeats=msg.split()[3]
-    if passwords[restno + 1] == paswd and int(updatedSeats)>0:
+    if passwords[restno + 1] == paswd and int(updatedSeats)>=0:
         time=msg.split()[2]
         mydb = connect()
         mycursor = mydb.cursor()
-        mycursor.execute(
-            "Update seat_" + restaurant[restno].split()[0] + " set avail_table = "+updatedSeats + " where time =" + time)
-        mydb.commit()
-        seatstr=showSeats(restno+1)
-        return seatstr, 1
+        try:
+            mycursor.execute(
+                "Update seat_" + restaurant[restno].split()[0] + " set avail_table = "+updatedSeats + " where time =" + time)
+            mydb.commit()
+            seatstr=showSeats(restno+1)
+            return seatstr, 1
+        except:
+            return " ",0
     else:
         return " ", 0
 def updateMenu(msg):
@@ -99,11 +110,14 @@ def updateMenu(msg):
             dish+=msg.split()[i]+" "
         mydb = connect()
         mycursor = mydb.cursor()
-        insertFn="INSERT into menu_"+restaurant[restno].split()[0] +" (dish, price) Values (%s, %s)"
-        menu=(dish,price)
-        mycursor.execute(insertFn,menu)
-        mydb.commit()
-        menuStr = showMenu(restno + 1)
-        return menuStr, 1
+        try:
+            insertFn="INSERT into menu_"+restaurant[restno].split()[0] +" (dish, price) Values (%s, %s)"
+            menu=(dish,price)
+            mycursor.execute(insertFn,menu)
+            mydb.commit()
+            menuStr = showMenu(restno + 1)
+            return menuStr, 1
+        except:
+            return " ",0
     else:
         return " ", 0
