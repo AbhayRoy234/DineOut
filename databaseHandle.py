@@ -89,17 +89,17 @@ def updateSeats(msg):
     else:
         return " ", 0
 def updateMenu(msg):
-    len=len(msg.split())
+    lent=len(msg.split())
     restno = int(msg[0]) - 1
-    paswd = msg.split()[len-1]
+    paswd = msg.split()[lent-1]
     if passwords[restno + 1] == paswd:
-        price=msg.split()[len-2]
+        price=msg.split()[lent-2]
         dish=""
-        for i in (2,len-3):
+        for i in (2,lent-3):
             dish+=msg.split()[i]+" "
         mydb = connect()
         mycursor = mydb.cursor()
-        insertFn="INSERT into menu_"+restaurant[restno].split()[0]+" (dish, price) Values (%s, %s)"
+        insertFn="INSERT into menu_"+restaurant[restno].split()[0] +" (dish, price) Values (%s, %s)"
         menu=(dish,price)
         mycursor.execute(insertFn,menu)
         mydb.commit()
