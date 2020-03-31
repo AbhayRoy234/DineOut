@@ -65,9 +65,24 @@ def showBookings(msg):
         mycursor = mydb.cursor()
         mycursor.execute("Select * from bookings_" + restaurant[restno].split()[0])
         bookings = mycursor.fetchall()
-        bookstr = "Time        Customer Name\n"
+        bookstr = "Time            Customer Name\n"
         for i in range(len(bookings)):
             bookstr += str(bookings[i][1]) + " PM   ===>  " + str(bookings[i][0]) + "\n"
         return bookstr,1
     else:
         return " ",0
+def updateSeats(msg):
+    restno = int(msg[0]) - 1
+    paswd = msg.split()[4]
+    if passwords[restno + 1] == paswd:
+        updatedSeats=msg.split()[3]
+        time=msg.split()[2]
+        mydb = connect()
+        mycursor = mydb.cursor()
+        mycursor.execute(
+            "Update seat_" + restaurant[restno].split()[0] + " set avail_table = "+updatedSeats + " where time =" + time)
+        mydb.commit()
+        seatstr=showSeats(restno+1)
+        return seatstr, 1
+    else:
+        return " ", 0

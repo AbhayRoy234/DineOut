@@ -67,9 +67,9 @@ def hotel_sms_reply():
                 error_msg="Either the instruction is invalid or password\nPlease try again"
                 resp.message(error_msg)
         elif msg.split()[1] == 'table':
-            success=databaseHandle.updateSeats(msg)
+            seatstr,success=databaseHandle.updateSeats(msg)
             if success:
-                resp.message("No. of available seats have been successfully updated")
+                resp.message("No. of available seats have been successfully updated\n"+seatstr)
             else :
                 error_msg="Either the instruction is invalid or password\nPlease try again"
                 resp.message(error_msg)

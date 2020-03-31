@@ -27,7 +27,7 @@ menu = [(12, 35),
 # mycursor.executemany(insertFn,menu)
 # mycursor.execute(createFn)
 # mydb.commit()
-# passwords={1:'0001',2:'0002',3:'0003',4:'0004',5:'0005',6:'0006'}
-# msg="1 booking 0001"
-# if passwords[int(msg[0])]==msg.split()[2]:
-#     print("yes")
+passwords={1:'0001',2:'0002',3:'0003',4:'0004',5:'0005',6:'0006'}
+msg="1 table 3 60 0001"
+if passwords[int(msg[0])]==msg.split()[4]:
+    print("yes")
