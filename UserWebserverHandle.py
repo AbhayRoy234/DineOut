@@ -67,7 +67,7 @@ def hotel_sms_reply():
         if msg.split()[1] == 'bookings':
             showBooking,success=databaseHandle.showBookings(msg)
             if success:
-                resp.message(showBooking)
+                resp.message(showBooking+"\n"+str(len(msg.split())))
             else :
                 error_msg="Either the instruction is invalid or password\nPlease try again"
                 resp.message(error_msg)
