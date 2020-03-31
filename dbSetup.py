@@ -37,4 +37,5 @@ str=""
 for i in (2,len(list)-3):
     str+=list[i]+" "
     print(i)
-print(str[:])
+len=len(msg.split())
+list=

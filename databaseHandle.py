@@ -88,7 +88,8 @@ def updateSeats(msg):
         return seatstr, 1
     else:
         return " ", 0
-def updateMenu(msg,len):
+def updateMenu(msg):
+    len=len(msg.split())
     restno = int(msg[0]) - 1
     msg_list=msg.split()
     paswd = msg_list[len-1]
