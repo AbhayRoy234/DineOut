@@ -43,7 +43,7 @@ def user_sms_reply():
     return str(resp)
 
 
-@app.route("/hotel", methods=['POST'])
+@app.route("/hotel", methods=['GET', 'POST'])
 def hotel_sms_reply():
     msg = request.form.get('Body')
     resp = MessagingResponse()
