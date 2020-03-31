@@ -62,7 +62,7 @@ def hotel_sms_reply():
     elif msg == 'c':
         append_menu_msg="To update menu of your restaurant\nGive instruction as:\n hotel no. menu <name of the item> <price> <password>\nfor instance if you want to update menu of Sepoy Grande give this instruction\n1 menu roti 30 ****"
         resp.message(append_menu_msg)
-    elif len(msg)>10 and int(msg.split()[0])<7 and len(msg.split())>2:
+    elif len(msg)>10 and len(msg.split())>2 and msg[0].isdigit() and int(msg[0])<7:
         # len=len(msg.split())
         if msg.split()[1] == 'bookings':
             showBooking,success=databaseHandle.showBookings(msg)
