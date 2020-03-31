@@ -43,8 +43,8 @@ def user_sms_reply():
     return str(resp)
 
 
-@app.route("/hotelMGR", methods=['POST'])
-def hotelMGR_sms_reply():
+@app.route("/hotel", methods=['POST'])
+def hotel_sms_reply():
     msg = request.form.get('Body')
     resp = MessagingResponse()
     if msg == 'Dine out':
