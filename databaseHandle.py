@@ -44,7 +44,7 @@ def bookSeat(msg):
     time=msg.split()[0][2:]
     mycursor.execute("Update seat_"+restaurant[restno].split()[0]+" set avail_table = avail_table -1 where time ="+time)
     mycursor.execute("Select avail_table from seat_"+restaurant[restno].split()[0]+" where time ="+time)
-    avail_seat=mycursor.fetchall()
+    avail_seat = mycursor.fetchall()
     if int(avail_seat[0][0])>0:
         mydb.commit()
         insert(msg)
@@ -62,7 +62,7 @@ def insert(msg):
         cust_name += msg.split()[i] + " "
     insertFn = "Insert into bookings_" + restaurant[restno].split()[0] + " (cust_name, time) Values (%s, %s)"
     bookingDetails = (cust_name, time)
-    mycursor1.execute(insertFn,bookingDetails)
+    mycursor1.execute(insertFn, bookingDetails)
     mydb.commit()
 def showBookings(msg):
     restno=int(msg[0])-1
