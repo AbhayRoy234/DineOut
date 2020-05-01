@@ -20,7 +20,7 @@ def user_sms_reply():
     resp = MessagingResponse()
     if msg == 'Dine out' or msg == 'hi' or msg == 'Hi' or msg == 'hii' or msg == 'Hey' or msg == 'hello' or msg == 'hey':
         resp.message(
-            "Here we have a list of partner restaurants from which you can pick any, to have a delightful experience.\nSelect the option accordingly\n1. Sepoy Grande\n2. Radission Blu\n3. Orchid\n4. Gufha\n5. Jalpaan Dining Saga\n6. Kapoor's cafe")
+            "Hey there! Here we have a list of partner restaurants from which you can pick any, to have a delightful experience.\nSelect the option accordingly\n1. Sepoy Grande\n2. Radission Blu\n3. Orchid\n4. Gufha\n5. Jalpaan Dining Saga\n6. Kapoor's cafe")
     elif msg.isdigit() and int(msg) < 7:
         menu = databaseHandle.showMenu(int(msg))
         seats = databaseHandle.showSeats(int(msg))
