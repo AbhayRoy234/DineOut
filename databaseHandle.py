@@ -1,4 +1,3 @@
-#author:AMIT
 #this file handles all the request from WebserverHandle
 
 import mysql.connector

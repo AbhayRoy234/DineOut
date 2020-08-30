@@ -1,4 +1,3 @@
-#author:AMIT
 #this is the flask application that fetch data from twilio api and gives response on basis of the instructions recieved
 
 from flask import Flask, request
